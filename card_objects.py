@@ -10,19 +10,22 @@ class Card(object):
 	definitions inspired by John Zelle's "Python Programming" 2nd ed.
 	"""
 	def __init__(self, rank, suit):
-		"""Return a Card object with rank and suit value."""
+		"""Return a Card object with rank and suit value.
+		"""
 		self.rank = rank
 		self.suit = suit
 		
-	def get_rank(self):
-		"""Returns the rank of the card."""
+	def getRank(self):
+		"""Returns the rank of the card.
+		"""
 		return self.rank
 
-	def get_suit(self):
-		"""Returns the suit of the card."""
+	def getSuit(self):
+		"""Returns the suit of the card.
+		"""
 		return self.suit
 
-	def bj_value(self):
+	def BJValue(self):
 		"""Returns the blackjack value of the card as an integer. 
 		Example:
 		-------
@@ -49,47 +52,42 @@ class Deck(object):
 	"""A class for generating a deck of cards.
 	"""
 	def __init__(self):
-		"""Initializes the deck, which is an empty list.
-		"""
-		self.game_deck = []
-	
-	def constructor(self):
 		"""Constructs a deck of 52 cards. This function will create a deck
 		using the traditional French suits with the suit order Clubs, Diamonds,
 		Hearts, and Spades. 
 		Output:
+		-------
 		An enumerated list of Card objects.
 		"""
-		
+		self.game_deck = []
 		for suit in ['Clubs', 'Diamonds', 'Hearts', 'Spades']:
 			for num in ['Ace','2', '3', '4', '5', '6', '7', '8', '9', '10',
 							'Jack', 'Queen', 'King']:		
 				self.game_deck.append(Card(num, suit))
 		self.game_deck = list(enumerate(self.game_deck)) #Enumerate for easy
 														 #sorting later.
-		return self.game_deck
 
-	def shuffle_deck(self):
+	def shuffleDeck(self):
 		"""Shuffles a deck of cards.
 		"""
 		return random.shuffle(self.game_deck)
 
-	def draw_card(self):
+	def drawCard(self):
 		"""Returns the value of the top card and subtracts that value from 
 		the deck.
 		"""
 		top_card = self.game_deck[0]
-		self.game_deck = self.game_deck.pop(0)
+		self.game_deck.pop(0)
 		return top_card
 
-	def cards_left(self):
+	def cardsLeft(self):
 		return len(self.game_deck)
 
 	def sort(self):
 		"""Sorts the remaining cards back into standard order. Thunder suggested
 		merge sort (that magnificent bastard!)
 		"""
-		pass
+		pass # Write me!!!! Bite me!!!!
 
 
 class Hand(object):
@@ -99,15 +97,16 @@ class Hand(object):
 		"""An empty list"""
 		self.current_hand = []
 
-	def add_card(self, card):
+	def addCard(self, card):
 		"""Adds a card to current_hand.
 		"""
 		return self.current_hand.append(card)
 		
-	def subtract_card(self, card):
+	def subtractCard(self, card):
 		"""Removes a card from current_hand.
 		"""
 		return self.current_hand.remove(card)
+
 
 class Player(object):
 	"""A class that plays a hand of cards.
@@ -118,16 +117,5 @@ class Player(object):
 		self.name = name
 
 if __name__ == '__main__':
-	test_deck = Deck() 
-	test_deck.constructor()
-	#print(type(test_deck))
-	print(test_deck)
-	a = test_deck.constructor()
-	print(a)
-	print(type(a))
-
-
-
-	#for item in bravo:
-	#	print(item)
-
+	test_hand = Hand()
+	print(test_hand.current_hand)
