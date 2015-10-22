@@ -52,6 +52,8 @@ def turn(dealer, player_, new_deck):
 			print("\n\nYou win!\n\n\n") 
 		elif player_.hand.handValue() < dealer.hand.handValue():
 			print("\n\nYou lose!\n\n\n")
+		elif player_.hand.handValue() == dealer.hand.handValue():
+			print("\n\nIt's a draw!\n\n\n")
 	main()
 		
 def init_game():
