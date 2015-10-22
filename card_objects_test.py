@@ -26,7 +26,6 @@ def deck_object_tests():
 	"""Test draw_card method.
 	"""
 	returned = test_deck.drawCard()
-	#print(returned)
 	assert(len(returned)) == 2 #A single card object is a tuple.  
 	print("Passed draw_card test!")
 
@@ -41,12 +40,27 @@ def hand_object_tests():
 	"""
 	test_deck = Deck()
 	returned = test_deck.drawCard()
-	test_hand = Hand()
+	test_hand = Hand("test")
 	test_hand.addCard(returned)
+	print(test_hand.current_hand[0][1].handValue())
 	assert(test_hand.current_hand[0][1].__str__()) == "Ace of Clubs"
-	Print("Passed hand object tests!")
+	
+	print("Passed hand object tests!")
+	return test_hand #Pass this onto player_object_test to make sure the Player
+					 #object inherits its characteristics
+
+def player_object_tests(hand):
+	"""Test Player objects.
+	"""
+	test_player = Player("Player1", hand)
+	assert(test_player.hand.current_hand[0][1].__str__()) == "Ace of Clubs"
+	print("Passed player object tests!")
+	print("!!!!!!!!!! All tests passed !!!!!!!!!!")
+
+
 
 if __name__ == "__main__":
 	card_object_tests()
 	deck_object_tests()
-	hand_object_tests()
+	output = hand_object_tests()
+	player_object_tests(output)

@@ -93,9 +93,10 @@ class Deck(object):
 class Hand(object):
 	"""a class for storing the draw_card objects.
 	"""
-	def __init__(self):
+	def __init__(self, name):
 		"""An empty list"""
 		self.current_hand = []
+		self.name = name
 
 	def addCard(self, card):
 		"""Adds a card to current_hand.
@@ -107,15 +108,46 @@ class Hand(object):
 		"""
 		return self.current_hand.remove(card)
 
+	def handValue(self):
+		"""The total value of a hand !!!!!NOT YET TESTED IN TEST FILE!!!!!!
+		"""
+		total = []
+		for item in self.current_hand: 
+			index, card_obj = item
+			total.append(card_obj.BJValue())
+		total_ace = []
+		for item in total:
+			if item == 1:
+				if sum(total) - 1 + 11 <= 21: #Checks to see if 11 would be a
+											  #better value for Ace.
+					total_ace.append(11)
+					continue
+				else:
+					total_ace.append(1)
+			else:
+				total_ace.append(item)
+		return sum(total_ace)
 
 class Player(object):
 	"""A class that plays a hand of cards.
 	"""
-	def __init__(self, name):
-		"""Returns a Player object whose name is 'name'
+	def __init__(self, name, hand):
+		"""Returns a Player object whose name is 'name' and contains a hand
 		"""
 		self.name = name
+		self.hand = hand
 
 if __name__ == '__main__':
-	test_hand = Hand()
-	print(test_hand.current_hand)
+	test_hand = Hand("test")
+	player = Player(Player, test_hand)
+	test_deck = Deck()
+	"""for item in test_deck.game_deck:
+		index, card_object = item
+		print(index, card_object.__str__())"""
+	card1 = test_deck.game_deck.pop(0) #Ace of Clubs
+	print(card1[1])
+	card2 = test_deck.game_deck.pop(12) #7 of Clubs (index is two less)
+	print(card2[1])
+	test_hand.addCard(card1)
+	test_hand.addCard(card2)
+	print(test_hand.handValue())

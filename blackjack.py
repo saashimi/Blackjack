@@ -5,33 +5,20 @@ __author__ = "Kevin Saavedra"
 import card_objects as c_o
 import sys
 
-def hit_me():
+def hit_me(dealer_input, player_input):
 	"""Adds one card to the hand
 	"""
-	pass
+	print("That happened painlessly!")
 
-def stand():
-	"""Initiates the next turn.
+#def stand(): # Don't know if we actually need a stand function.
+#	"""Initiates the next turn.
+#	"""
+#	pass
+
+def turn(dealer_input, player_input):
+	"""The core turn logic. 
 	"""
-	pass
-
-def deal(hand1, hand2, deck):
-	"""Deals the two cards into the hand at the start of the game.
-	"""
-	for item in [hand1, hand2]:
-		for i in range(2):
-			card = deck.drawCard()
-			item.addCard(card)
-			print(item.name, "Card", i + 1, "is", 
-					item.current_hand[i][1].__str__())
-		print("\n")
-	decide_input = input("Would you like to hit or stand?\n" \
-					   "Press SPACEBAR to hit or Press j to stand.\n>> ")
-	if decide_input == " ":
-		pass # do something.
-	if decide_input == "j":
-		pass
-
+	print("That happened painlessly!")
 		
 def init_game():
 	"""Initializes a dealer, player, and shuffled game deck.
@@ -40,13 +27,26 @@ def init_game():
 	dealer_hand, player_hand, and new_deck, which are passed to the deal 
 	function.
 	"""
-	dealer_hand = c_o.Hand("Dealer")
-	player_hand = c_o.Hand("Player")
+	dealer_hand = c_o.Hand("Dealer") #TODO: write a for loop to simplify this.
+	player_hand = c_o.Hand("Player") # These are all initialization steps.
 	dealer = c_o.Player("Dealer", dealer_hand)
 	player_ = c_o.Player("Player", player_hand)
 	new_deck = c_o.Deck() 
 	new_deck.shuffleDeck()
-	deal(dealer_hand, player_hand, new_deck)
+	for item in [dealer_hand, player_hand]: 
+		for i in range(2):
+			card = new_deck.drawCard()
+			item.addCard(card)
+			print(item.name, "Card", i + 1, "is", 
+					item.current_hand[i][1].__str__())
+		print("Total hand value is", item.handValue())
+		print("\n")
+	decide_input = input("Would you like to hit or stand?\n" \
+					   "type 'h' to hit or 's' to stand.\n>> ")
+	if decide_input == "h":
+		hit_me(dealer, player_)
+	elif decide_input == "s":
+		turn(dealer_, player)
 
 def init_script():
 	"""Allows the player to start or exit the game.
