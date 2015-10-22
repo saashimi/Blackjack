@@ -1,4 +1,4 @@
-# Card and Deck objects for gamescript.py
+# Card and Deck objects for blackjack.py
 # This objects are intended to be reusable for future card games.
 __author__ = "Kevin Saavedra"
 

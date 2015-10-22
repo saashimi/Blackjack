@@ -5,7 +5,7 @@ __author__ = "Kevin Saavedra"
 import card_objects as c_o
 import sys
 
-def hit_me(Player, new_deck):
+def hit_me(dealer, Player, new_deck):
 	"""Adds one card to the hand. The input Player can refer to both the user
 	and the dealer.
 	"""
@@ -17,29 +17,41 @@ def hit_me(Player, new_deck):
 	print("Total hand value is", Player.hand.handValue())
 	print("\n")
 	if Player.hand.handValue() > 21:
-		print("\nBUST! Game Over! :(\n\n\n")
+		print("\nBUST! Game Over! :(\n\n\n") 
 		main()
 	else:
-		turn(None, Player, new_deck)
+		turn(dealer, Player, new_deck)
 
-def stand(dealer, player, new_deck): 
-	"""Completes the game..
-	"""
-	pass
 
 def turn(dealer, player_, new_deck):
 	"""The core turn logic. 
 	"""
+	"""Player input prompt"""
 	decide_input = input("Would you like to hit or stand?\n" \
-					   "type 'h' to hit or 's' to stand.\n>> ")
+				   "type 'h' to hit or 's' to stand.\n>> ")
+	"""Dealer's turn"""
+	print("\nDealer's Turn!\n")
+	if dealer.hand.handValue() <= 16:
+		card = new_deck.drawCard()
+		dealer.hand.addCard(card)
+		print("\nDealer draws a card!")
+	else:
+		print("Dealer stands!")
+	for item in dealer.hand.current_hand:
+		index, card_object = item
+		print(dealer.name, "Card", "is", card_object)
+	print("Total hand value is", dealer.hand.handValue(), "\n")
+	if dealer.hand.handValue() > 21:
+		print("\nDealer BUSTS!\n")
+	"""Player decision script"""
 	if decide_input == "h":
-		hit_me(player_, new_deck)
+		hit_me(dealer, player_, new_deck)
 	elif decide_input == "s":
 		if player_.hand.handValue() > dealer.hand.handValue() and (
 			dealer.hand.handValue() < 22):
 			print("\n\nYou win!\n\n\n") 
 		elif player_.hand.handValue() < dealer.hand.handValue():
-			print("You lose!")
+			print("\n\nYou lose!\n\n\n")
 	main()
 		
 def init_game():
