@@ -5,20 +5,42 @@ __author__ = "Kevin Saavedra"
 import card_objects as c_o
 import sys
 
-def hit_me(dealer_input, player_input):
-	"""Adds one card to the hand
+def hit_me(Player, new_deck):
+	"""Adds one card to the hand. The input Player can refer to both the user
+	and the dealer.
 	"""
-	print("That happened painlessly!")
+	card = new_deck.drawCard()
+	Player.hand.addCard(card)
+	for item in Player.hand.current_hand:
+		index, card_object = item
+		print(Player.name, "Card", "is", card_object)
+	print("Total hand value is", Player.hand.handValue())
+	print("\n")
+	if Player.hand.handValue() > 21:
+		print("\nBUST! Game Over! :(\n\n\n")
+		main()
+	else:
+		turn(None, Player, new_deck)
 
-#def stand(): # Don't know if we actually need a stand function.
-#	"""Initiates the next turn.
-#	"""
-#	pass
+def stand(dealer, player, new_deck): 
+	"""Completes the game..
+	"""
+	pass
 
-def turn(dealer_input, player_input):
+def turn(dealer, player_, new_deck):
 	"""The core turn logic. 
 	"""
-	print("That happened painlessly!")
+	decide_input = input("Would you like to hit or stand?\n" \
+					   "type 'h' to hit or 's' to stand.\n>> ")
+	if decide_input == "h":
+		hit_me(player_, new_deck)
+	elif decide_input == "s":
+		if player_.hand.handValue() > dealer.hand.handValue() and (
+			dealer.hand.handValue() < 22):
+			print("\n\nYou win!\n\n\n") 
+		elif player_.hand.handValue() < dealer.hand.handValue():
+			print("You lose!")
+	main()
 		
 def init_game():
 	"""Initializes a dealer, player, and shuffled game deck.
@@ -37,18 +59,13 @@ def init_game():
 		for i in range(2):
 			card = new_deck.drawCard()
 			item.addCard(card)
-			print(item.name, "Card", i + 1, "is", 
+			print(item.name, "Card", "is", 
 					item.current_hand[i][1].__str__())
 		print("Total hand value is", item.handValue())
 		print("\n")
-	decide_input = input("Would you like to hit or stand?\n" \
-					   "type 'h' to hit or 's' to stand.\n>> ")
-	if decide_input == "h":
-		hit_me(dealer, player_)
-	elif decide_input == "s":
-		turn(dealer_, player)
+	turn(dealer, player_, new_deck)
 
-def init_script():
+def main():
 	"""Allows the player to start or exit the game.
 	Input: 
 	------
@@ -66,11 +83,6 @@ def init_script():
 	else:
 		print("Not a valid command, bozo. We're outta here.")
 		sys.exit(0)	
-
-def main():
-	"""Main function"""
-	init_script()
-
 	
 if __name__ == "__main__":
 	main()
