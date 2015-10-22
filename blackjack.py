@@ -5,23 +5,21 @@ __author__ = "Kevin Saavedra"
 import card_objects as c_o
 import sys
 
-def hit_me(dealer, Player, new_deck):
-	"""Adds one card to the hand. The input Player can refer to both the user
-	and the dealer.
+def hit_me(dealer, player_, new_deck):
+	"""Adds one card to the hand.
 	"""
 	card = new_deck.drawCard()
-	Player.hand.addCard(card)
-	for item in Player.hand.current_hand:
+	player_.hand.addCard(card)
+	for item in player_.hand.current_hand:
 		index, card_object = item
-		print(Player.name, "Card", "is", card_object)
-	print("Total hand value is", Player.hand.handValue())
+		print(player_.name, "Card", "is", card_object)
+	print("Total hand value is", player_.hand.handValue())
 	print("\n")
-	if Player.hand.handValue() > 21:
+	if player_.hand.handValue() > 21:
 		print("\nBUST! Game Over! :(\n\n\n") 
 		main()
 	else:
-		turn(dealer, Player, new_deck)
-
+		turn(dealer, player_, new_deck)
 
 def turn(dealer, player_, new_deck):
 	"""The core turn logic. 
@@ -50,7 +48,11 @@ def turn(dealer, player_, new_deck):
 		if player_.hand.handValue() > dealer.hand.handValue() and (
 			dealer.hand.handValue() < 22):
 			print("\n\nYou win!\n\n\n") 
-		elif player_.hand.handValue() < dealer.hand.handValue():
+		if player_.hand.handValue() < dealer.hand.handValue() and (
+			dealer.hand.handValue() > 22):
+			print("\n\nYou win!\n\n\n") # dealer busts
+		elif player_.hand.handValue() < dealer.hand.handValue() and (
+			dealer.hand.handValue() < 22):
 			print("\n\nYou lose!\n\n\n")
 		elif player_.hand.handValue() == dealer.hand.handValue():
 			print("\n\nIt's a draw!\n\n\n")

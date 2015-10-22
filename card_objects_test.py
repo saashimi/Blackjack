@@ -42,12 +42,24 @@ def hand_object_tests():
 	returned = test_deck.drawCard()
 	test_hand = Hand("test")
 	test_hand.addCard(returned)
-	print(test_hand.current_hand[0][1].handValue())
+	assert test_hand.handValue() == 11 
 	assert(test_hand.current_hand[0][1].__str__()) == "Ace of Clubs"
 	
 	print("Passed hand object tests!")
 	return test_hand #Pass this onto player_object_test to make sure the Player
 					 #object inherits its characteristics
+
+def mergeSort_test():
+	"""Tests the mergeSort function."""
+	test_deck = Deck()
+	test_deck1 = Deck()
+	test_deck.shuffleDeck()
+	assert sorted(test_deck.game_deck) != test_deck.game_deck #Check that it's 
+															  #not shuffled.
+	test_deck.mergeSort()
+	assert test_deck.game_deck == test_deck1.game_deck #Check that it's been
+	                                                   # shuffled.
+	print("Passed mergeSort_test!") 
 
 def player_object_tests(hand):
 	"""Test Player objects.

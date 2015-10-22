@@ -83,12 +83,28 @@ class Deck(object):
 	def cardsLeft(self):
 		return len(self.game_deck)
 
-	def sort(self):
-		"""Sorts the remaining cards back into standard order. Thunder suggested
-		merge sort (that magnificent bastard!)
+	def mergeSort(self):
+		"""Sorts the remaining cards back into standard order. Thunder specified
+		a scratchbuilt merge sort (that magnificent bastard!)
 		"""
-		pass # Write me!!!! Bite me!!!!
-
+		sorted_list = []
+		if len(self.game_deck) < 2:
+			return self.game_deck
+		midpoint = int(len(self.game_deck) / 2)
+		left_list = self.mergeSort(self.game_deck[:midpoint])  #recursive call
+		right_list = self.mergesort(self.game_deck[midpoint:]) #recursive call  
+		i = 0
+		j = 0
+		while i < len(left_list) and j < len(right_list):
+			if left_list[i] > right_list[j]:
+				result.append(right_list[j])
+				j += 1
+			else:
+				result.append(left_list[i])
+				i += 1
+		sorted_list += left_list[i:]
+		sorted_list += right_list[j:]
+		return sorted_list
 
 class Hand(object):
 	"""a class for storing the draw_card objects.
@@ -109,7 +125,19 @@ class Hand(object):
 		return self.current_hand.remove(card)
 
 	def handValue(self):
-		"""The total value of a hand !!!!!NOT YET TESTED IN TEST FILE!!!!!!
+		"""The total value of a hand.  This function handles aces first by 
+		checking their value if 1, and evaluating if a value of 11 can be applied
+		without busting.
+
+		Example:
+		--------
+		Ace of Hearts, 8 of Clubs --> 19
+		Ace of Hearts, 8 of Clubs, 2 of Diamonds --> 11
+
+		Output:
+		-------
+		The total integer value of all cards in a hand, after assigning values
+		to Aces. 
 		"""
 		total = []
 		for item in self.current_hand: 
