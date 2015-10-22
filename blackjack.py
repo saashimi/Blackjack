@@ -6,7 +6,19 @@ import card_objects as c_o
 import sys
 
 def hit_me(dealer, player_, new_deck):
-	"""Adds one card to the hand.
+	"""Adds one card to the player's hand. A bust condition will end the game in
+	a loss for the player. 
+
+	Input:
+	------
+	dealer, player_, new_deck objects.
+
+	Output:
+	-------
+	A bust condition will end the game with a loss. 
+	Otherwise, dealer, player_, and new_deck objects are passed to the turn()
+	function for futher play.
+
 	"""
 	card = new_deck.drawCard()
 	player_.hand.addCard(card)
@@ -21,14 +33,56 @@ def hit_me(dealer, player_, new_deck):
 	else:
 		turn(dealer, player_, new_deck)
 
-def turn(dealer, player_, new_deck):
-	"""The core turn logic. 
+def evaluator(dealer, player_, new_deck):
+	"""Compares hand values and decides who wins and loses.
 	"""
+	"""Player wins outright"""
+	if player_.hand.handValue() > dealer.hand.handValue() and (
+		dealer.hand.handValue() < 22):
+		print("\n\nYou win!\n\n\n") 
+	"""Dealer busts"""
+	if player_.hand.handValue() < dealer.hand.handValue() and (
+		dealer.hand.handValue() > 22):
+		print("\n\nYou win!\n\n\n")
+	"""Player loses outright"""
+	if player_.hand.handValue() < dealer.hand.handValue() and (
+		dealer.hand.handValue() < 22):
+		print("\n\nYou lose!\n\n\n")
+	"""Draw situation"""
+	if player_.hand.handValue() == dealer.hand.handValue():
+		print("\n\nIt's a draw!\n\n\n")
+	main()
+
+def turn(dealer, player_, new_deck):
+	"""The core turn logic. Player is asked whether or not to hit or stand. 
+	Meanwhile, the dealer evaluates whether or not to draw or stand.  Per common
+	casino rules, the dealer will hit if hand value is <= 16 and will stand if 
+	the value is > 16 and < 21.
+	
+	Input:
+	------
+	dealer, player_, deck objects.
+	
+	User Input:
+	------------
+	'h' to hit or 's' to stand.
+
+	Output:
+	-------
+	If player decides to hit, dealer, player_, and deck obects are passed to the
+	hit_me function.
+
+	If player decides to stand, dealer, player_, and deck objects are passed to 
+	the evaluator function for scoring. 
+	"""
+	
 	"""Player input prompt"""
 	decide_input = input("Would you like to hit or stand?\n" \
 				   "type 'h' to hit or 's' to stand.\n>> ")
 	"""Dealer's turn"""
-	print("\nDealer's Turn!\n")
+	print("\nDealer's Turn!\n") #for program and game flow, the dealer's turn and 
+	                            #and string outputs are placed here so the user's
+	                            #input does not end the function call. 
 	if dealer.hand.handValue() <= 16:
 		card = new_deck.drawCard()
 		dealer.hand.addCard(card)
@@ -45,21 +99,11 @@ def turn(dealer, player_, new_deck):
 	if decide_input == "h":
 		hit_me(dealer, player_, new_deck)
 	elif decide_input == "s":
-		if player_.hand.handValue() > dealer.hand.handValue() and (
-			dealer.hand.handValue() < 22):
-			print("\n\nYou win!\n\n\n") 
-		if player_.hand.handValue() < dealer.hand.handValue() and (
-			dealer.hand.handValue() > 22):
-			print("\n\nYou win!\n\n\n") # dealer busts
-		elif player_.hand.handValue() < dealer.hand.handValue() and (
-			dealer.hand.handValue() < 22):
-			print("\n\nYou lose!\n\n\n")
-		elif player_.hand.handValue() == dealer.hand.handValue():
-			print("\n\nIt's a draw!\n\n\n")
-	main()
-		
+		evaluator(dealer, player_, new_deck)		
+
 def init_game():
 	"""Initializes a dealer, player, and shuffled game deck.
+	
 	Output:
 	-------
 	dealer_hand, player_hand, and new_deck, which are passed to the deal 
@@ -83,9 +127,11 @@ def init_game():
 
 def main():
 	"""Allows the player to start or exit the game.
-	Input: 
+	
+	User Input: 
 	------
 	'start' or 'quit' via user prompt.
+	
 	Output:
 	-------
 	If 'start', initiates game.

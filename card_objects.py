@@ -41,7 +41,7 @@ class Card(object):
 			return int(self.rank)
 
 	def __str__(self):
-		"""Returns values of cards in a natural-sounding format.
+		"""Returns values of cards in a pretty print format.
 		Example:
 		--------
 		Two of Spades, Queen of Hearts
@@ -57,7 +57,8 @@ class Deck(object):
 		Hearts, and Spades. 
 		Output:
 		-------
-		An enumerated list of Card objects.
+		An enumerated list of Card objects. Useful for implementing the mergeSort
+		function below.
 		"""
 		self.game_deck = []
 		for suit in ['Clubs', 'Diamonds', 'Hearts', 'Spades']:
@@ -144,10 +145,11 @@ class Hand(object):
 			index, card_obj = item
 			total.append(card_obj.BJValue())
 		total_ace = []
-		for item in total:
+		for item in total: #Checks first list for any Aces. 
 			if item == 1:
 				if sum(total) - 1 + 11 <= 21: #Checks to see if 11 would be a
-											  #better value for Ace.
+											  #better value for Ace and adds it
+											  #to a new list.
 					total_ace.append(11)
 					continue
 				else:
