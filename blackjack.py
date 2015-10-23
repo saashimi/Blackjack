@@ -82,7 +82,7 @@ def turn(dealer, player_, new_deck):
 	
 	"""Player input prompt"""
 	decide_input = input("Would you like to hit or stand?\n" \
-				   "type 'h' to hit or 's' to stand.\n>> ")
+				   "Type 'h' to hit or 's' to stand.\n>> ")
 	"""Dealer's turn"""
 	print("\nDealer's Turn!\n") #for program and game flow, the dealer's turn  
 	                            #and string outputs are placed here so the user's
@@ -103,15 +103,20 @@ def turn(dealer, player_, new_deck):
 	if decide_input == "h":
 		hit_me(dealer, player_, new_deck)
 	elif decide_input == "s":
-		stand_evaluator(dealer, player_, new_deck)		
+		stand_evaluator(dealer, player_, new_deck)
+	else: 
+		print("Error! Not a valid command!")		
 
 def init_game():
-	"""Initializes a dealer, player, and shuffled game deck.
+	"""Initializes a dealer, player, and shuffled game deck. Will check for 
+	instantaneous blackjack conditions as a result of the deal.
 	
 	Output:
 	-------
 	dealer_hand, player_hand, and new_deck, which are passed to the deal 
-	function.
+	function. 
+
+	None if Dealer, Player, or both Dealer and Player has a blackjack.
 	"""
 	dealer_hand = c_o.Hand("Dealer") #TODO: write a for loop to simplify this.
 	player_hand = c_o.Hand("Player") # These are all initialization steps.
@@ -127,7 +132,17 @@ def init_game():
 					item.current_hand[i][1].__str__())
 		print("Total hand value is", item.handValue())
 		print("\n")
-	turn(dealer, player_, new_deck)
+	if dealer.hand.handValue() == 21 and player_.hand.handValue() == 21:
+		print("\nPrint Player/Dealer Blackjack! It's a draw!\n")
+		main()
+	elif dealer.hand.handValue() == 21:
+		print("\nDealer has Blackjack! Game Over! :(\n")
+		main()
+	elif player_.hand.handValue() == 21:
+		print("\nBlackjack! You win!\n")
+		main()
+	else:
+		turn(dealer, player_, new_deck)
 
 def main():
 	"""Allows the player to start or exit the game.
