@@ -31,7 +31,7 @@ class Card(object):
 		-------
 		2 == 2; King == 10
 		Note: An ace is given the default value of 1 here.  The alternative
-		value of 11 is assigned in blackjack.py.
+		value of 11 is evaluated and assigned in handValue below.
 		"""
 		if self.rank == 'Ace':
 			return 1 
@@ -85,27 +85,32 @@ class Deck(object):
 		return len(self.game_deck)
 
 	def mergeSort(self):
-		"""Sorts the remaining cards back into standard order. Thunder specified
-		a scratchbuilt merge sort (that magnificent bastard!)
+		"""Sorts the remaining cards back into standard order. 
 		"""
-		sorted_list = []
-		if len(self.game_deck) < 2:
-			return self.game_deck
-		midpoint = int(len(self.game_deck) / 2)
-		left_list = self.mergeSort(self.game_deck[:midpoint])  #recursive call
-		right_list = self.mergesort(self.game_deck[midpoint:]) #recursive call  
-		i = 0
-		j = 0
-		while i < len(left_list) and j < len(right_list):
-			if left_list[i] > right_list[j]:
-				result.append(right_list[j])
-				j += 1
-			else:
-				result.append(left_list[i])
-				i += 1
-		sorted_list += left_list[i:]
-		sorted_list += right_list[j:]
-		return sorted_list
+		def mergeSortInt(list_): #internal function to avoid complications with
+								 #recursively calling deck object. 
+			result = []
+			if len(list_) < 2:
+				return list_
+			mid = len(list_) // 2
+			left_list = mergeSortInt(list_[:mid]) # recursive call
+			right_list = mergeSortInt(list_[mid:])# recursive call
+			i = 0
+			j = 0
+			while i < len(left_list) and j < len(right_list):
+				if left_list[i] > right_list[j]:
+					result.append(right_list[j])
+					j += 1
+				else:
+					result.append(left_list[i])
+					i += 1
+			result += left_list[i:]
+			result += right_list[j:]
+			return result
+
+		game_deck = self.game_deck
+		sorted_ = mergeSortInt(game_deck)
+		return sorted_
 
 class Hand(object):
 	"""a class for storing the draw_card objects.
@@ -171,9 +176,11 @@ if __name__ == '__main__':
 	test_hand = Hand("test")
 	player = Player(Player, test_hand)
 	test_deck = Deck()
-	"""for item in test_deck.game_deck:
-		index, card_object = item
-		print(index, card_object.__str__())"""
+	test_deck.shuffleDeck()
+	print(test_deck.game_deck)
+	a = test_deck.mergeSort()
+	print(a)
+	"""
 	card1 = test_deck.game_deck.pop(0) #Ace of Clubs
 	print(card1[1])
 	card2 = test_deck.game_deck.pop(12) #7 of Clubs (index is two less)
@@ -181,3 +188,4 @@ if __name__ == '__main__':
 	test_hand.addCard(card1)
 	test_hand.addCard(card2)
 	print(test_hand.handValue())
+	"""

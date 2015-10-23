@@ -33,16 +33,20 @@ def hit_me(dealer, player_, new_deck):
 	else:
 		turn(dealer, player_, new_deck)
 
-def evaluator(dealer, player_, new_deck):
-	"""Compares hand values and decides who wins and loses.
+def stand_evaluator(dealer, player_, new_deck):
+	"""If the player does not bust, this function evaluates the value of his or
+	her hand compared with the dealer's hand. Note that the dealer bust condition 
+	was evaluated in turn() function prior to this step.  
 	"""
 	"""Player wins outright"""
 	if player_.hand.handValue() > dealer.hand.handValue() and (
-		dealer.hand.handValue() < 22):
+		dealer.hand.handValue() < 22): #player will never have a handValue >21.
+	                                   #see hit_me() above for automatic 
+	                                   #lose condition in case of this event.
 		print("\n\nYou win!\n\n\n") 
 	"""Dealer busts"""
 	if player_.hand.handValue() < dealer.hand.handValue() and (
-		dealer.hand.handValue() > 22):
+		dealer.hand.handValue() > 21):
 		print("\n\nYou win!\n\n\n")
 	"""Player loses outright"""
 	if player_.hand.handValue() < dealer.hand.handValue() and (
@@ -57,7 +61,7 @@ def turn(dealer, player_, new_deck):
 	"""The core turn logic. Player is asked whether or not to hit or stand. 
 	Meanwhile, the dealer evaluates whether or not to draw or stand.  Per common
 	casino rules, the dealer will hit if hand value is <= 16 and will stand if 
-	the value is > 16 and < 21.
+	the value is > 16 and < 22.
 	
 	Input:
 	------
@@ -73,14 +77,14 @@ def turn(dealer, player_, new_deck):
 	hit_me function.
 
 	If player decides to stand, dealer, player_, and deck objects are passed to 
-	the evaluator function for scoring. 
+	the stand_evaluator function for scoring. 
 	"""
 	
 	"""Player input prompt"""
 	decide_input = input("Would you like to hit or stand?\n" \
 				   "type 'h' to hit or 's' to stand.\n>> ")
 	"""Dealer's turn"""
-	print("\nDealer's Turn!\n") #for program and game flow, the dealer's turn and 
+	print("\nDealer's Turn!\n") #for program and game flow, the dealer's turn  
 	                            #and string outputs are placed here so the user's
 	                            #input does not end the function call. 
 	if dealer.hand.handValue() <= 16:
@@ -99,7 +103,7 @@ def turn(dealer, player_, new_deck):
 	if decide_input == "h":
 		hit_me(dealer, player_, new_deck)
 	elif decide_input == "s":
-		evaluator(dealer, player_, new_deck)		
+		stand_evaluator(dealer, player_, new_deck)		
 
 def init_game():
 	"""Initializes a dealer, player, and shuffled game deck.
