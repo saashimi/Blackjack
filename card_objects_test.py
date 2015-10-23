@@ -52,12 +52,11 @@ def mergeSort_test():
 	"""Tests the mergeSort function."""
 	test_deck = Deck()
 	test_deck1 = Deck()
-	#print(test_deck.game_deck)
 	test_deck.shuffleDeck()
 	assert sorted(test_deck.game_deck) != test_deck.game_deck #Check that it's 
 															  #been shuffled.
 	merge_sorted_deck = test_deck.mergeSort()
-	assert merge_sorted_deck == sorted(merge_sorted_deck) #Check that it's been
+	assert merge_sorted_deck == sorted(merge_sorted_deck)	 #Check that it's been
 	                                                   # sorted.
 	print("Passed mergeSort_test!") 
 
@@ -73,5 +72,5 @@ if __name__ == "__main__":
 	card_object_tests()
 	deck_object_tests()
 	output = hand_object_tests()
-	player_object_tests(output)
 	mergeSort_test()
+	player_object_tests(output)
