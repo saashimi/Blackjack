@@ -131,44 +131,47 @@ class Hand(object):
 		return self.current_hand.remove(card)
 
 	def handValue(self):
-		"""The total value of a hand.  This function handles aces first by 
-		checking their value if 1, and evaluating if a value of 11 can be applied
-		without busting. The start condition of two aces in the opening deal is
-		automatically assigned a value of 12. 
-
-		Example:
-		--------
-		Ace of Hearts, 8 of Clubs --> 19
-		Ace of Hearts, 8 of Clubs, 2 of Diamonds --> 11
+		"""The total value of a hand.  This function handles aces in a nested
+		function, ace_eval(). See below for additional information.
 
 		Output:
-		-------
-		The total integer value of all cards in a hand, after assigning values
-		to Aces. 
+		--------
+		List of black card values, which are passed to ace_eval for further 
+		processing of aces.
 		"""
 		total = []
 		for item in self.current_hand: 
 			index, card_obj = item
 			total.append(card_obj.BJValue())
 		
-		if len(total) == 2 and sum(total) == 2:
-			ace_pair = 12 
-			return ace_pair 
-		
-		else:
-			total_ace = []
-			for item in total: #Checks first list for any Aces. 
-				if item == 1:
-					if sum(total) -1 + 11 <= 21: #Checks to see if 11  would be 
+		def ace_eval(total):
+			"""Checks for aces in the hand and recusively updates values to 11
+			if advantageous to the total score. 
+
+			Example:
+			--------
+			Ace of Hearts, 8 of Clubs --> 19
+			Ace of Hearts, 8 of Clubs, 2 of Diamonds --> 11
+
+			Output:
+			-------
+			The total integer value of all cards in a hand, after assigning values
+			to Aces. 
+			"""
+			for item in total:
+				if item == 1: # Checks for any aces.
+					if sum(total) -1 + 11 <= 21: #Checks to see if 11 would be 
 					                             #a better value for Ace and 
 					                             #adds it to a new list.
-						total_ace.append(11)
-						continue
+						total.remove(1)
+						total.append(11)
+						ace_eval(total) 
 					else:
-						total_ace.append(1)
-				else:
-					total_ace.append(item)
-		return sum(total_ace)
+						continue
+			return sum(total)
+		
+		total_ace = ace_eval(total)
+		return total_ace		
 
 class Player(object):
 	"""A class that plays a hand of cards.
@@ -188,7 +191,6 @@ if __name__ == '__main__':
 	print(test_deck.game_deck)
 	a = test_deck.mergeSort()
 	print(a)
-	
 	"""
 	card1 = test_deck.game_deck.pop(0) #Ace of Clubs
 	print(card1[1])
