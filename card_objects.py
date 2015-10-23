@@ -162,7 +162,7 @@ class Hand(object):
 				if item == 1: # Checks for any aces.
 					if sum(total) -1 + 11 <= 21: #Checks to see if 11 would be 
 					                             #a better value for Ace and 
-					                             #adds it to a new list.
+					                             #updates its value if so.
 						total.remove(1)
 						total.append(11)
 						ace_eval(total) 
