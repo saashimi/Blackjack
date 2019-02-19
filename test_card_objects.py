@@ -9,8 +9,9 @@ class TestCardObjects(unittest.TestCase):
     def setUpClass(cls):
         cls.test_card = Card("Ace", "Spades")
         cls.test_deck = Deck()
+        cls.test_deck_drawn = Deck()
         cls.shuffled_deck = cls.test_deck.shuffleDeck()
-        cls.drawn_card = cls.test_deck.drawCard()
+        cls.drawn_card = cls.test_deck_drawn.drawCard()
         cls.test_hand = Hand('test')
         cls.test_hand.addCard(cls.drawn_card)
         cls.test_player = Player('Player1', cls.test_hand)
@@ -46,7 +47,7 @@ class TestCardObjects(unittest.TestCase):
 
     def test_cards_left(self):
         """Make sure a drawn card subtracts one from the deck."""
-        self.assertEqual(self.test_deck.cardsLeft(), 51)
+        self.assertEqual(self.test_deck_drawn.cardsLeft(), 51)
         # Expect one less card every time one is drawn.
 
     def test_hand_object(self):
