@@ -57,24 +57,20 @@ class TestCardObjects(unittest.TestCase):
         #return test_hand #Pass this onto player_object_test to make sure the Player
         #object inherits its characteristics
 
-    def player_object_tests(self):
+    def test_player_object(self):
         """Test value in player hand."""
-        test_player = Player("Player1", hand)
+        test_player = Player("Player1", self.test_hand)
         self.assertEqual(test_player.hand.current_hand[0][1].__str__(), 'Ace of Clubs')
 
-"""
-def mergeSort_test():
-    
-    test_deck = Deck()
-    test_deck1 = Deck()
-    test_deck.shuffleDeck()
-    assert sorted(test_deck.game_deck) != test_deck.game_deck #Check that it's
-    #been shuffled.
-    merge_sorted_deck = test_deck.mergeSort()
-    assert merge_sorted_deck == sorted(merge_sorted_deck)	 #Check that it's been
-    # sorted.
-    print("Passed mergeSort_test!")
-"""
+    def test_mergeSort(self):
+        """Test roll-your-own sorting method"""
+        test_deck1 = Deck()
+        self.assertNotEqual(sorted(self.test_deck.game_deck), test_deck1.game_deck)
+        # Check that it's been shuffled.
+        merge_sorted_deck = self.test_deck.mergeSort()
+        self.assertEqual(merge_sorted_deck, sorted(merge_sorted_deck))	 #Check that it's been
+        # sorted.
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
